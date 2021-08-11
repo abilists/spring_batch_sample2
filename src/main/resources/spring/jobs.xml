@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- Job start -->
+	<batch:job id="simpleJob" job-repository="jobRepository">	
+		<batch:step id="sStep1">
+			<batch:tasklet transaction-manager="transactionManagerOracle" ref="sampleOneStep" />
+			<batch:next on="*" to="sStep2"/>
+	 		<batch:end on="STOPED"/>
+		</batch:step>
+		<batch:step id="sStep2" parent="sStep1">
+			<batch:tasklet ref="sampleTwoStep" />
+			<batch:end on="COMPLETED"/>
+			<batch:end on="FAILED" exit-code="FAILED"/>
+		</batch:step>
+	</batch:job>
+	<!-- Job end -->
+
+	<bean id="sampleOneStep" class="io.sample.batch.step.SampleOneStep" />
+	<bean id="sampleTwoStep" class="io.sample.batch.step.SampleTwoStep" />
+
+</beans>

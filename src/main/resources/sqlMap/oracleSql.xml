@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.sample.batch.dao.OracleDao">
+
+	<select id="sltSampleTableList" parameterType="map" resultType="io.sample.batch.bean.model.SampleModel">
+		SELECT 
+			*
+		FROM 
+			sampleTable
+		WHERE 
+			ROWNUM <![CDATA[<=]]> 2
+	</select>
+
+	<delete id="dltSampleTable" parameterType="map">
+		DELETE FROM 
+			sampleTable
+		WHERE 
+			id=#{id}
+	</delete>
+
+</mapper>
